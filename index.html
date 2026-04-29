@@ -1,68 +1,110 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
-        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
-        <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet.photon.css">
-        <style>
-        html, body, #map {
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+    <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/filter.css">
+    <link rel="stylesheet" href="css/nouislider.min.css">
+    <link rel="stylesheet" href="css/leaflet.photon.css">
+    <style>
+        html,
+        body,
+        #map {
             width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
         }
-        </style>
-        <title>Fåglar från artdatabanken</title>
-    </head>
-    <body>
-        <div id="map">
-        </div>
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/L.Control.Layers.Tree.min.js"></script>
-        <script src="js/L.Control.Locate.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet.photon.js"></script>
-        <script src="data/Ejbedmd_1.js"></script>
-        <script src="data/Ejtillmplig_2.js"></script>
-        <script src="data/Nrahotad_3.js"></script>
-        <script src="data/Srbar_4.js"></script>
-        <script src="data/Starkthotad_5.js"></script>
-        <script src="data/Nationelltutdd_6.js"></script>
-        <script>
+    </style>
+    <title>Fåglar från artdatabanken</title>
+    <style id="copilot-fix">
+        /* Ta bort vit bakgrund och standardkant */
+        #menu {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        /* Gör filterpanelen till en overlay som ligger ovanpå kartan */
+        .col3#menu {
+            position: absolute !important;
+            right: 0;
+            top: 0;
+            max-width: 320px;
+            /* justera vid behov */
+            width: auto;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        /* Låt kartfönstret fylla hela bredden */
+        #mapWindow.col9 {
+            width: 100% !important;
+        }
+
+        /* Mobilanpassning (panel smalare; kan sätta lätt transparent bakgrund om du vill) */
+        @media (max-width: 768px) {
+            .col3#menu {
+                max-width: 85vw;
+                background: rgba(255, 255, 255, 0) !important;
+                /* 0 = helt transparent */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/L.Control.Layers.Tree.min.js"></script>
+    <script src="js/L.Control.Locate.min.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet.photon.js"></script>
+    <script src="js/tailDT.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/wNumb.js"></script>
+    <script src="data/Ejbedmd_1.js"></script>
+    <script src="data/Ejtillmplig_2.js"></script>
+    <script src="data/Nrahotad_3.js"></script>
+    <script src="data/Srbar_4.js"></script>
+    <script src="data/Starkthotad_5.js"></script>
+    <script src="data/Nationelltutdd_6.js"></script>
+    <script>
         var map = L.map('map', {
-            zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[54.94503737102152,10.62270655130454],[56.73957072109962,16.368702122247576]]);
+            zoomControl: false, maxZoom: 28, minZoom: 1
+        }).fitBounds([[55.00529797537177, 11.262123931389766], [56.780210640735156, 17.016587879908855]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
         // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
-         var tempDiv = document.createElement('div');
-         tempDiv.innerHTML = content;
-         var rows = tempDiv.querySelectorAll('tr');
-         for (var i = 0; i < rows.length; i++) {
-             var td = rows[i].querySelector('td.visible-with-data');
-             var key = td ? td.id : '';
-             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
-                 rows[i].parentNode.removeChild(rows[i]);
-             }
-         }
-         return tempDiv.innerHTML;
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            var rows = tempDiv.querySelectorAll('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var td = rows[i].querySelector('td.visible-with-data');
+                var key = td ? td.id : '';
+                if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                    rows[i].parentNode.removeChild(rows[i]);
+                }
+            }
+            return tempDiv.innerHTML;
         }
         // modify popup if contains media
         function addClassToPopupIfMedia(content, popup) {
@@ -73,7 +115,7 @@
                 var src = imgTd.getAttribute('src');
                 if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.update();
                     }, 10);
                 } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
@@ -82,7 +124,7 @@
                     audio.src = src;
                     imgTd.parentNode.replaceChild(audio, imgTd);
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.setContent(tempDiv.innerHTML);
                         popup.update();
                     }, 10);
@@ -97,10 +139,10 @@
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
                     // Aggiorna il popup quando il video carica i metadati
-                    video.addEventListener('loadedmetadata', function() {
+                    video.addEventListener('loadedmetadata', function () {
                         popup.update();
                     });
-                    setTimeout(function() {
+                    setTimeout(function () {
                         popup.setContent(tempDiv.innerHTML);
                         popup.update();
                     }, 10);
@@ -111,7 +153,7 @@
                 popup._contentNode.classList.remove('media');
             }
         }
-        var title = new L.Control({'position':'topright'});
+        var title = new L.Control({ 'position': 'topright' });
         title.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'info');
             this.update();
@@ -124,7 +166,7 @@
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
-        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        L.control.locate({ locateOptions: { maxZoom: 19 } }).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
             map.setMaxBounds(map.getBounds());
@@ -158,10 +200,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Ejbedmd_1_0() {
@@ -214,10 +256,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Ejtillmplig_2_0() {
@@ -270,10 +312,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Nrahotad_3_0() {
@@ -326,10 +368,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Srbar_4_0() {
@@ -382,10 +424,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Starkthotad_5_0() {
@@ -438,10 +480,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function (e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_Nationelltutdd_6_0() {
@@ -480,14 +522,14 @@
         });
         bounds_group.addLayer(layer_Nationelltutdd_6);
         var overlaysTree = [
-            {label: '<img src="legend/Nationelltutdd_6.png" /> Nationellt utdöd', layer: layer_Nationelltutdd_6},
-            {label: '<img src="legend/Starkthotad_5.png" /> Starkt hotad', layer: layer_Starkthotad_5},
-            {label: '<img src="legend/Srbar_4.png" /> Sårbar', layer: layer_Srbar_4},
-            {label: '<img src="legend/Nrahotad_3.png" /> Nära hotad', layer: layer_Nrahotad_3},
-            {label: '<img src="legend/Ejtillmplig_2.png" /> Ej tillämplig', layer: layer_Ejtillmplig_2},
-            {label: '<img src="legend/Ejbedmd_1.png" /> Ej bedömd', layer: layer_Ejbedmd_1},
-            {label: "Carto Light All", layer: layer_CartoLightAll_0, radioGroup: 'bm' },]
-        var lay = L.control.layers.tree(null, overlaysTree,{
+            { label: '<img src="legend/Nationelltutdd_6.png" /> Nationellt utdöd', layer: layer_Nationelltutdd_6 },
+            { label: '<img src="legend/Starkthotad_5.png" /> Starkt hotad', layer: layer_Starkthotad_5 },
+            { label: '<img src="legend/Srbar_4.png" /> Sårbar', layer: layer_Srbar_4 },
+            { label: '<img src="legend/Nrahotad_3.png" /> Nära hotad', layer: layer_Nrahotad_3 },
+            { label: '<img src="legend/Ejtillmplig_2.png" /> Ej tillämplig', layer: layer_Ejtillmplig_2 },
+            { label: '<img src="legend/Ejbedmd_1.png" /> Ej bedömd', layer: layer_Ejbedmd_1 },
+            { label: "Carto Light All", layer: layer_CartoLightAll_0, radioGroup: 'bm' },]
+        var lay = L.control.layers.tree(null, overlaysTree, {
             //namedToggle: true,
             //selectorBack: false,
             //closedSymbol: '&#8862; &#x1f5c0;',
@@ -498,6 +540,338 @@
         });
         lay.addTo(map);
         setBounds();
-        </script>        
-    </body>
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className = "row";
+        row.id = "all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className = "col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className = "col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = { "Svenskt namn": "str" };
+        function filterFunc() {
+            map.eachLayer(function (lyr) {
+                if ("options" in lyr && "dataVar" in lyr["options"]) {
+                    features = this[lyr["options"]["dataVar"]].features.slice(0);
+                    try {
+                        for (key in Filters) {
+                            keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                            if (Filters[key] == "str" || Filters[key] == "bool") {
+                                var selection = [];
+                                var options = document.getElementById("sel_" + keyS).options
+                                for (var i = 0; i < options.length; i++) {
+                                    if (options[i].selected) selection.push(options[i].value);
+                                }
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1;
+                                            i >= 0; --i) {
+                                            if (selection.indexOf(
+                                                features[i].properties[key]) < 0
+                                                && selection.length > 0) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "int") {
+                                sliderVals = document.getElementById(
+                                    "div_" + keyS).noUiSlider.get();
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (parseInt(features[i].properties[key])
+                                                < sliderVals[0]
+                                                || parseInt(features[i].properties[key])
+                                                > sliderVals[1]) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "real") {
+                                sliderVals = document.getElementById(
+                                    "div_" + keyS).noUiSlider.get();
+                                try {
+                                    if (key in features[0].properties) {
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (features[i].properties[key]
+                                                < sliderVals[0]
+                                                || features[i].properties[key]
+                                                > sliderVals[1]) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                            if (Filters[key] == "date"
+                                || Filters[key] == "datetime"
+                                || Filters[key] == "time") {
+                                try {
+                                    if (key in features[0].properties) {
+                                        HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                                        startdate = document.getElementById("dat_" +
+                                            HTMLkey + "_date1").value.replace(" ", "T");
+                                        enddate = document.getElementById("dat_" +
+                                            HTMLkey + "_date2").value.replace(" ", "T");
+                                        for (i = features.length - 1; i >= 0; --i) {
+                                            if (features[i].properties[key] < startdate
+                                                || features[i].properties[key] > enddate) {
+                                                features.splice(i, 1);
+                                            }
+                                        }
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                        }
+                    } catch (err) {
+                    }
+                    this[lyr["options"]["layerName"]].clearLayers();
+                    this[lyr["options"]["layerName"]].addData(features);
+                }
+            })
+        }
+        document.getElementById("menu").appendChild(
+            document.createElement("div"));
+        var div_Svensktnamn = document.createElement('div');
+        div_Svensktnamn.id = "div_Svensktnamn";
+        div_Svensktnamn.className = "filterselect";
+        document.getElementById("menu").appendChild(div_Svensktnamn);
+        sel_Svensktnamn = document.createElement('select');
+        sel_Svensktnamn.multiple = true;
+        sel_Svensktnamn.size = 10;
+        sel_Svensktnamn.id = "sel_Svensktnamn";
+        var Svensktnamn_options_str = "<option value='' unselected></option>";
+        sel_Svensktnamn.onchange = function () { filterFunc() };
+        Svensktnamn_options_str += '<option value="alfågel">alfågel</option>';
+        Svensktnamn_options_str += '<option value="alförrädare">alförrädare</option>';
+        Svensktnamn_options_str += '<option value="alkekung">alkekung</option>';
+        Svensktnamn_options_str += '<option value="amerikansk bläsand">amerikansk bläsand</option>';
+        Svensktnamn_options_str += '<option value="amerikansk bläsand x bläsand">amerikansk bläsand x bläsand</option>';
+        Svensktnamn_options_str += '<option value="amerikansk kricka">amerikansk kricka</option>';
+        Svensktnamn_options_str += '<option value="backsvala">backsvala</option>';
+        Svensktnamn_options_str += '<option value="bergand">bergand</option>';
+        Svensktnamn_options_str += '<option value="berglärka">berglärka</option>';
+        Svensktnamn_options_str += '<option value="berguv">berguv</option>';
+        Svensktnamn_options_str += '<option value="biätare">biätare</option>';
+        Svensktnamn_options_str += '<option value="björktrast">björktrast</option>';
+        Svensktnamn_options_str += '<option value="bläsand">bläsand</option>';
+        Svensktnamn_options_str += '<option value="bläsand x gräsand">bläsand x gräsand</option>';
+        Svensktnamn_options_str += '<option value="blå kärrhök">blå kärrhök</option>';
+        Svensktnamn_options_str += '<option value="blåhake">blåhake</option>';
+        Svensktnamn_options_str += '<option value="blåmes x talgoxe">blåmes x talgoxe</option>';
+        Svensktnamn_options_str += '<option value="bredstjärtad labb">bredstjärtad labb</option>';
+        Svensktnamn_options_str += '<option value="brun glada">brun glada</option>';
+        Svensktnamn_options_str += '<option value="brunand">brunand</option>';
+        Svensktnamn_options_str += '<option value="brunsiska">brunsiska</option>';
+        Svensktnamn_options_str += '<option value="brushane">brushane</option>';
+        Svensktnamn_options_str += '<option value="drillsnäppa">drillsnäppa</option>';
+        Svensktnamn_options_str += '<option value="duvhök">duvhök</option>';
+        Svensktnamn_options_str += '<option value="ejder">ejder</option>';
+        Svensktnamn_options_str += '<option value="engelsk sädesärla">engelsk sädesärla</option>';
+        Svensktnamn_options_str += '<option value="enkelbeckasin">enkelbeckasin</option>';
+        Svensktnamn_options_str += '<option value="entita">entita</option>';
+        Svensktnamn_options_str += '<option value="eurasisk kricka">eurasisk kricka</option>';
+        Svensktnamn_options_str += '<option value="europeisk fiskmås">europeisk fiskmås</option>';
+        Svensktnamn_options_str += '<option value="europeisk rödspov">europeisk rödspov</option>';
+        Svensktnamn_options_str += '<option value="europeisk skata">europeisk skata</option>';
+        Svensktnamn_options_str += '<option value="europeisk sädesärla">europeisk sädesärla</option>';
+        Svensktnamn_options_str += '<option value="europeisk x engelsk sädesärla">europeisk x engelsk sädesärla</option>';
+        Svensktnamn_options_str += '<option value="europeisk ärtsångare">europeisk ärtsångare</option>';
+        Svensktnamn_options_str += '<option value="fisk-/silvertärna">fisk-/silvertärna</option>';
+        Svensktnamn_options_str += '<option value="fjällberglärka">fjällberglärka</option>';
+        Svensktnamn_options_str += '<option value="fjällgås">fjällgås</option>';
+        Svensktnamn_options_str += '<option value="fjällgås/bläsgås">fjällgås/bläsgås</option>';
+        Svensktnamn_options_str += '<option value="fjälluggla">fjälluggla</option>';
+        Svensktnamn_options_str += '<option value="gravand">gravand</option>';
+        Svensktnamn_options_str += '<option value="gräsand x kricka">gräsand x kricka</option>';
+        Svensktnamn_options_str += '<option value="gräshoppsångare">gräshoppsångare</option>';
+        Svensktnamn_options_str += '<option value="grågås x vitkindad gås">grågås x vitkindad gås</option>';
+        Svensktnamn_options_str += '<option value="gråhakedopping">gråhakedopping</option>';
+        Svensktnamn_options_str += '<option value="gråkråka">gråkråka</option>';
+        Svensktnamn_options_str += '<option value="grålira">grålira</option>';
+        Svensktnamn_options_str += '<option value="gråtrut">gråtrut</option>';
+        Svensktnamn_options_str += '<option value="gråtrut x havstrut">gråtrut x havstrut</option>';
+        Svensktnamn_options_str += '<option value="grönfink">grönfink</option>';
+        Svensktnamn_options_str += '<option value="grönsångare">grönsångare</option>';
+        Svensktnamn_options_str += '<option value="gulhämpling">gulhämpling</option>';
+        Svensktnamn_options_str += '<option value="gulsparv">gulsparv</option>';
+        Svensktnamn_options_str += '<option value="göktyta">göktyta</option>';
+        Svensktnamn_options_str += '<option value="halsbandsparakit">halsbandsparakit</option>';
+        Svensktnamn_options_str += '<option value="havssula">havssula</option>';
+        Svensktnamn_options_str += '<option value="havstrut">havstrut</option>';
+        Svensktnamn_options_str += '<option value="hornuggla">hornuggla</option>';
+        Svensktnamn_options_str += '<option value="hussvala">hussvala</option>';
+        Svensktnamn_options_str += '<option value="härfågel">härfågel</option>';
+        Svensktnamn_options_str += '<option value="islommar">islommar</option>';
+        Svensktnamn_options_str += '<option value="isländsk rödbena">isländsk rödbena</option>';
+        Svensktnamn_options_str += '<option value="jorduggla">jorduggla</option>';
+        Svensktnamn_options_str += '<option value="järnsparv">järnsparv</option>';
+        Svensktnamn_options_str += '<option value="kaspisk trut">kaspisk trut</option>';
+        Svensktnamn_options_str += '<option value="kaspisk trut x gråtrut">kaspisk trut x gråtrut</option>';
+        Svensktnamn_options_str += '<option value="kentsk tärna">kentsk tärna</option>';
+        Svensktnamn_options_str += '<option value="klippduva">klippduva</option>';
+        Svensktnamn_options_str += '<option value="kontinental stjärtmes">kontinental stjärtmes</option>';
+        Svensktnamn_options_str += '<option value="kontinental x nordlig stjärtmes">kontinental x nordlig stjärtmes</option>';
+        Svensktnamn_options_str += '<option value="kornsparv">kornsparv</option>';
+        Svensktnamn_options_str += '<option value="kricka">kricka</option>';
+        Svensktnamn_options_str += '<option value="kungsfasan">kungsfasan</option>';
+        Svensktnamn_options_str += '<option value="kungsfiskare">kungsfiskare</option>';
+        Svensktnamn_options_str += '<option value="kungsörn">kungsörn</option>';
+        Svensktnamn_options_str += '<option value="kustlabb">kustlabb</option>';
+        Svensktnamn_options_str += '<option value="kustlabb, ljus morf">kustlabb, ljus morf</option>';
+        Svensktnamn_options_str += '<option value="kustlabb, mörk morf">kustlabb, mörk morf</option>';
+        Svensktnamn_options_str += '<option value="kustpipare">kustpipare</option>';
+        Svensktnamn_options_str += '<option value="kustsnäppa">kustsnäppa</option>';
+        Svensktnamn_options_str += '<option value="ladusvala">ladusvala</option>';
+        Svensktnamn_options_str += '<option value="lövsångare x gransångare">lövsångare x gransångare</option>';
+        Svensktnamn_options_str += '<option value="mandarinand">mandarinand</option>';
+        Svensktnamn_options_str += '<option value="medelhavstrut">medelhavstrut</option>';
+        Svensktnamn_options_str += '<option value="mellanskarv">mellanskarv</option>';
+        Svensktnamn_options_str += '<option value="mindre hackspett">mindre hackspett</option>';
+        Svensktnamn_options_str += '<option value="mindre sångsvan">mindre sångsvan</option>';
+        Svensktnamn_options_str += '<option value="mindre sångsvan/sångsvan">mindre sångsvan/sångsvan</option>';
+        Svensktnamn_options_str += '<option value="myrspov">myrspov</option>';
+        Svensktnamn_options_str += '<option value="mörkbukig prutgås">mörkbukig prutgås</option>';
+        Svensktnamn_options_str += '<option value="nilgås">nilgås</option>';
+        Svensktnamn_options_str += '<option value="nordlig gulärla">nordlig gulärla</option>';
+        Svensktnamn_options_str += '<option value="nordlig skata">nordlig skata</option>';
+        Svensktnamn_options_str += '<option value="nordlig stjärtmes">nordlig stjärtmes</option>';
+        Svensktnamn_options_str += '<option value="nötkråka">nötkråka</option>';
+        Svensktnamn_options_str += '<option value="pilgrimsfalk">pilgrimsfalk</option>';
+        Svensktnamn_options_str += '<option value="pilgrimsfalk/jaktfalk">pilgrimsfalk/jaktfalk</option>';
+        Svensktnamn_options_str += '<option value="praktejder">praktejder</option>';
+        Svensktnamn_options_str += '<option value="prutgås">prutgås</option>';
+        Svensktnamn_options_str += '<option value="pärluggla">pärluggla</option>';
+        Svensktnamn_options_str += '<option value="rackelhane">rackelhane</option>';
+        Svensktnamn_options_str += '<option value="ringand">ringand</option>';
+        Svensktnamn_options_str += '<option value="roskarl">roskarl</option>';
+        Svensktnamn_options_str += '<option value="råka/svartkråka">råka/svartkråka</option>';
+        Svensktnamn_options_str += '<option value="rödhalsad gås">rödhalsad gås</option>';
+        Svensktnamn_options_str += '<option value="rödhöna">rödhöna</option>';
+        Svensktnamn_options_str += '<option value="rödspov">rödspov</option>';
+        Svensktnamn_options_str += '<option value="rödvingetrast">rödvingetrast</option>';
+        Svensktnamn_options_str += '<option value="rördrom">rördrom</option>';
+        Svensktnamn_options_str += '<option value="rörsångare">rörsångare</option>';
+        Svensktnamn_options_str += '<option value="sandlöpare">sandlöpare</option>';
+        Svensktnamn_options_str += '<option value="sibirisk gransångare">sibirisk gransångare</option>';
+        Svensktnamn_options_str += '<option value="sibirisk knölsvärta">sibirisk knölsvärta</option>';
+        Svensktnamn_options_str += '<option value="sillgrissla/tordmule">sillgrissla/tordmule</option>';
+        Svensktnamn_options_str += '<option value="silltrut">silltrut</option>';
+        Svensktnamn_options_str += '<option value="silltrut x gråtrut">silltrut x gråtrut</option>';
+        Svensktnamn_options_str += '<option value="skandinavisk gråtrut">skandinavisk gråtrut</option>';
+        Svensktnamn_options_str += '<option value="skedstork">skedstork</option>';
+        Svensktnamn_options_str += '<option value="skogsgås">skogsgås</option>';
+        Svensktnamn_options_str += '<option value="skrattmås">skrattmås</option>';
+        Svensktnamn_options_str += '<option value="skräntärna">skräntärna</option>';
+        Svensktnamn_options_str += '<option value="smålom/storlom">smålom/storlom</option>';
+        Svensktnamn_options_str += '<option value="småtärna">småtärna</option>';
+        Svensktnamn_options_str += '<option value="snatterand x gräsand">snatterand x gräsand</option>';
+        Svensktnamn_options_str += '<option value="snögås">snögås</option>';
+        Svensktnamn_options_str += '<option value="snögås, vit morf">snögås, vit morf</option>';
+        Svensktnamn_options_str += '<option value="snösiska">snösiska</option>';
+        Svensktnamn_options_str += '<option value="sommargylling">sommargylling</option>';
+        Svensktnamn_options_str += '<option value="sparvuggla">sparvuggla</option>';
+        Svensktnamn_options_str += '<option value="spetsbergsgås">spetsbergsgås</option>';
+        Svensktnamn_options_str += '<option value="stare">stare</option>';
+        Svensktnamn_options_str += '<option value="stjärtand">stjärtand</option>';
+        Svensktnamn_options_str += '<option value="stjärtand x gräsand">stjärtand x gräsand</option>';
+        Svensktnamn_options_str += '<option value="storlabb">storlabb</option>';
+        Svensktnamn_options_str += '<option value="stormfågel">stormfågel</option>';
+        Svensktnamn_options_str += '<option value="storspov">storspov</option>';
+        Svensktnamn_options_str += '<option value="strandskata">strandskata</option>';
+        Svensktnamn_options_str += '<option value="stripgås">stripgås</option>';
+        Svensktnamn_options_str += '<option value="stäpphök">stäpphök</option>';
+        Svensktnamn_options_str += '<option value="stäpphök x ängshök">stäpphök x ängshök</option>';
+        Svensktnamn_options_str += '<option value="stäpphök/ängshök">stäpphök/ängshök</option>';
+        Svensktnamn_options_str += '<option value="svangås">svangås</option>';
+        Svensktnamn_options_str += '<option value="svart rödstjärt">svart rödstjärt</option>';
+        Svensktnamn_options_str += '<option value="svart stork">svart stork</option>';
+        Svensktnamn_options_str += '<option value="svart svan">svart svan</option>';
+        Svensktnamn_options_str += '<option value="svartbrynad albatross">svartbrynad albatross</option>';
+        Svensktnamn_options_str += '<option value="svarthakad buskskvätta">svarthakad buskskvätta</option>';
+        Svensktnamn_options_str += '<option value="svarthalsad dopping">svarthalsad dopping</option>';
+        Svensktnamn_options_str += '<option value="svarthuvad mås">svarthuvad mås</option>';
+        Svensktnamn_options_str += '<option value="svartkråka">svartkråka</option>';
+        Svensktnamn_options_str += '<option value="svartkråka x gråkråka">svartkråka x gråkråka</option>';
+        Svensktnamn_options_str += '<option value="svartnäbbad islom">svartnäbbad islom</option>';
+        Svensktnamn_options_str += '<option value="svartsnäppa">svartsnäppa</option>';
+        Svensktnamn_options_str += '<option value="svarttärna">svarttärna</option>';
+        Svensktnamn_options_str += '<option value="sydlig gransångare">sydlig gransångare</option>';
+        Svensktnamn_options_str += '<option value="sydlig gulärla">sydlig gulärla</option>';
+        Svensktnamn_options_str += '<option value="sädesärla">sädesärla</option>';
+        Svensktnamn_options_str += '<option value="sädgås">sädgås</option>';
+        Svensktnamn_options_str += '<option value="sävsparv x gulsparv">sävsparv x gulsparv</option>';
+        Svensktnamn_options_str += '<option value="tajgasångare">tajgasångare</option>';
+        Svensktnamn_options_str += '<option value="talltita">talltita</option>';
+        Svensktnamn_options_str += '<option value="talltita x tofsmes">talltita x tofsmes</option>';
+        Svensktnamn_options_str += '<option value="talltita/entita">talltita/entita</option>';
+        Svensktnamn_options_str += '<option value="tofsvipa">tofsvipa</option>';
+        Svensktnamn_options_str += '<option value="toppskarv">toppskarv</option>';
+        Svensktnamn_options_str += '<option value="trastsångare">trastsångare</option>';
+        Svensktnamn_options_str += '<option value="tretåig hackspett">tretåig hackspett</option>';
+        Svensktnamn_options_str += '<option value="tretåig mås">tretåig mås</option>';
+        Svensktnamn_options_str += '<option value="trädgårdsträdkrypare">trädgårdsträdkrypare</option>';
+        Svensktnamn_options_str += '<option value="trädkrypare x trädgårdsträdkrypare">trädkrypare x trädgårdsträdkrypare</option>';
+        Svensktnamn_options_str += '<option value="tundragås">tundragås</option>';
+        Svensktnamn_options_str += '<option value="tundratrut/atlantsilltrut/nordsjösilltrut">tundratrut/atlantsilltrut/nordsjösilltrut</option>';
+        Svensktnamn_options_str += '<option value="turkduva">turkduva</option>';
+        Svensktnamn_options_str += '<option value="vanlig gråhakedopping">vanlig gråhakedopping</option>';
+        Svensktnamn_options_str += '<option value="vanlig mindre sångsvan">vanlig mindre sångsvan</option>';
+        Svensktnamn_options_str += '<option value="vanlig nötväcka">vanlig nötväcka</option>';
+        Svensktnamn_options_str += '<option value="vanlig ormvråk">vanlig ormvråk</option>';
+        Svensktnamn_options_str += '<option value="vanlig rörhöna">vanlig rörhöna</option>';
+        Svensktnamn_options_str += '<option value="vanlig stenskvätta">vanlig stenskvätta</option>';
+        Svensktnamn_options_str += '<option value="vanlig tornfalk">vanlig tornfalk</option>';
+        Svensktnamn_options_str += '<option value="vanlig vit stork">vanlig vit stork</option>';
+        Svensktnamn_options_str += '<option value="vassångare">vassångare</option>';
+        Svensktnamn_options_str += '<option value="vattenpiplärka">vattenpiplärka</option>';
+        Svensktnamn_options_str += '<option value="vinterhämpling">vinterhämpling</option>';
+        Svensktnamn_options_str += '<option value="vit stork">vit stork</option>';
+        Svensktnamn_options_str += '<option value="vithövdad havsörn">vithövdad havsörn</option>';
+        Svensktnamn_options_str += '<option value="vitnackad svärta">vitnackad svärta</option>';
+        Svensktnamn_options_str += '<option value="vitnäbbad islom">vitnäbbad islom</option>';
+        Svensktnamn_options_str += '<option value="vitstjärnig blåhake">vitstjärnig blåhake</option>';
+        Svensktnamn_options_str += '<option value="ägretthäger">ägretthäger</option>';
+        Svensktnamn_options_str += '<option value="ängshök">ängshök</option>';
+        Svensktnamn_options_str += '<option value="årta">årta</option>';
+        Svensktnamn_options_str += '<option value="östersjötrut">östersjötrut</option>';
+        sel_Svensktnamn.innerHTML = Svensktnamn_options_str;
+        div_Svensktnamn.appendChild(sel_Svensktnamn);
+        var lab_Svensktnamn = document.createElement('div');
+        lab_Svensktnamn.innerHTML = 'Svenskt namn';
+        lab_Svensktnamn.className = 'filterlabel';
+        div_Svensktnamn.appendChild(lab_Svensktnamn);
+        var reset_Svensktnamn = document.createElement('div');
+        reset_Svensktnamn.innerHTML = 'clear filter';
+        reset_Svensktnamn.className = 'filterlabel';
+        reset_Svensktnamn.onclick = function () {
+            var options = document.getElementById("sel_Svensktnamn").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_Svensktnamn.appendChild(reset_Svensktnamn);
+    </script>
+</body>
+
 </html>
