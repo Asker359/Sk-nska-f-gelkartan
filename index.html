@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/leaflet.photon.css">
         <style>
         html, body, #map {
@@ -38,12 +37,16 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet.photon.js"></script>
-        <script src="js/leaflet-search.js"></script>
-        <script src="data/Fglarindeladeutifrnrdlistan_1.js"></script>
+        <script src="data/Ejbedmd_1.js"></script>
+        <script src="data/Ejtillmplig_2.js"></script>
+        <script src="data/Nrahotad_3.js"></script>
+        <script src="data/Srbar_4.js"></script>
+        <script src="data/Starkthotad_5.js"></script>
+        <script src="data/Nationelltutdd_6.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[55.53927729534362,12.91141367917943],[55.715546956905776,13.357413398439407]]);
+        }).fitBounds([[55.620503900783035,12.991806076566672],[55.79649694917675,13.438406963809014]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -138,7 +141,7 @@
         });
         layer_CartoLightAll_0;
         map.addLayer(layer_CartoLightAll_0);
-        function pop_Fglarindeladeutifrnrdlistan_1(feature, layer) {
+        function pop_Ejbedmd_1(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
@@ -155,11 +158,274 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Fglarindeladeutifrnrdlistan_1_0(feature) {
-            switch(String(feature.properties['Rödlistekategori'])) {
-                case 'RE':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
+        function style_Ejbedmd_1_0() {
+            return {
+                pane: 'pane_Ejbedmd_1',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(81,168,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Ejbedmd_1');
+        map.getPane('pane_Ejbedmd_1').style.zIndex = 401;
+        map.getPane('pane_Ejbedmd_1').style['mix-blend-mode'] = 'normal';
+        var layer_Ejbedmd_1 = new L.geoJson(json_Ejbedmd_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Ejbedmd_1',
+            layerName: 'layer_Ejbedmd_1',
+            pane: 'pane_Ejbedmd_1',
+            onEachFeature: pop_Ejbedmd_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Ejbedmd_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Ejbedmd_1);
+        map.addLayer(layer_Ejbedmd_1);
+        function pop_Ejtillmplig_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fyndinformation</th>\
+                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Ejtillmplig_2_0() {
+            return {
+                pane: 'pane_Ejtillmplig_2',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,38,254,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Ejtillmplig_2');
+        map.getPane('pane_Ejtillmplig_2').style.zIndex = 402;
+        map.getPane('pane_Ejtillmplig_2').style['mix-blend-mode'] = 'normal';
+        var layer_Ejtillmplig_2 = new L.geoJson(json_Ejtillmplig_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Ejtillmplig_2',
+            layerName: 'layer_Ejtillmplig_2',
+            pane: 'pane_Ejtillmplig_2',
+            onEachFeature: pop_Ejtillmplig_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Ejtillmplig_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Ejtillmplig_2);
+        map.addLayer(layer_Ejtillmplig_2);
+        function pop_Nrahotad_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(String(feature.properties['id']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fyndinformation</th>\
+                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Nrahotad_3_0() {
+            return {
+                pane: 'pane_Nrahotad_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,161,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Nrahotad_3');
+        map.getPane('pane_Nrahotad_3').style.zIndex = 403;
+        map.getPane('pane_Nrahotad_3').style['mix-blend-mode'] = 'normal';
+        var layer_Nrahotad_3 = new L.geoJson(json_Nrahotad_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Nrahotad_3',
+            layerName: 'layer_Nrahotad_3',
+            pane: 'pane_Nrahotad_3',
+            onEachFeature: pop_Nrahotad_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Nrahotad_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Nrahotad_3);
+        map.addLayer(layer_Nrahotad_3);
+        function pop_Srbar_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fyndinformation</th>\
+                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Srbar_4_0() {
+            return {
+                pane: 'pane_Srbar_4',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,123,123,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Srbar_4');
+        map.getPane('pane_Srbar_4').style.zIndex = 404;
+        map.getPane('pane_Srbar_4').style['mix-blend-mode'] = 'normal';
+        var layer_Srbar_4 = new L.geoJson(json_Srbar_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Srbar_4',
+            layerName: 'layer_Srbar_4',
+            pane: 'pane_Srbar_4',
+            onEachFeature: pop_Srbar_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Srbar_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Srbar_4);
+        map.addLayer(layer_Srbar_4);
+        function pop_Starkthotad_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fyndinformation</th>\
+                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Starkthotad_5_0() {
+            return {
+                pane: 'pane_Starkthotad_5',
+                radius: 6.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,1,1,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Starkthotad_5');
+        map.getPane('pane_Starkthotad_5').style.zIndex = 405;
+        map.getPane('pane_Starkthotad_5').style['mix-blend-mode'] = 'normal';
+        var layer_Starkthotad_5 = new L.geoJson(json_Starkthotad_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Starkthotad_5',
+            layerName: 'layer_Starkthotad_5',
+            pane: 'pane_Starkthotad_5',
+            onEachFeature: pop_Starkthotad_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Starkthotad_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Starkthotad_5);
+        map.addLayer(layer_Starkthotad_5);
+        function pop_Nationelltutdd_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Fyndinformation</th>\
+                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Nationelltutdd_6_0() {
+            return {
+                pane: 'pane_Nationelltutdd_6',
                 radius: 8.0,
                 opacity: 1,
                 color: 'rgba(255,255,255,1.0)',
@@ -172,123 +438,34 @@
                 fillColor: 'rgba(0,0,0,1.0)',
                 interactive: true,
             }
-                    break;
-                case 'EN':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-                radius: 6.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(255,1,5,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'VU':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-                radius: 6.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(255,131,143,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'NT':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(233,184,6,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'NA':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-                radius: 6.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(79,135,255,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'NE':
-                    return {
-                pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(255,255,255,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 2.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(0,184,80,1.0)',
-                interactive: true,
-            }
-                    break;
-            }
         }
-        map.createPane('pane_Fglarindeladeutifrnrdlistan_1');
-        map.getPane('pane_Fglarindeladeutifrnrdlistan_1').style.zIndex = 401;
-        map.getPane('pane_Fglarindeladeutifrnrdlistan_1').style['mix-blend-mode'] = 'normal';
-        var layer_Fglarindeladeutifrnrdlistan_1 = new L.geoJson(json_Fglarindeladeutifrnrdlistan_1, {
+        map.createPane('pane_Nationelltutdd_6');
+        map.getPane('pane_Nationelltutdd_6').style.zIndex = 406;
+        map.getPane('pane_Nationelltutdd_6').style['mix-blend-mode'] = 'normal';
+        var layer_Nationelltutdd_6 = new L.geoJson(json_Nationelltutdd_6, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Fglarindeladeutifrnrdlistan_1',
-            layerName: 'layer_Fglarindeladeutifrnrdlistan_1',
-            pane: 'pane_Fglarindeladeutifrnrdlistan_1',
-            onEachFeature: pop_Fglarindeladeutifrnrdlistan_1,
+            dataVar: 'json_Nationelltutdd_6',
+            layerName: 'layer_Nationelltutdd_6',
+            pane: 'pane_Nationelltutdd_6',
+            onEachFeature: pop_Nationelltutdd_6,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_Fglarindeladeutifrnrdlistan_1_0(feature));
+                return L.circleMarker(latlng, style_Nationelltutdd_6_0(feature));
             },
         });
-        bounds_group.addLayer(layer_Fglarindeladeutifrnrdlistan_1);
-        map.addLayer(layer_Fglarindeladeutifrnrdlistan_1);
-        map.on("zoomend", function(e) {
-            if (map.getZoom() <= 19 && map.getZoom() >= 12) {
-                map.addLayer(layer_Fglarindeladeutifrnrdlistan_1);
-            } else if (map.getZoom() > 19 || map.getZoom() < 12) {
-                map.removeLayer(layer_Fglarindeladeutifrnrdlistan_1);
-            }
-        });
-            if (map.getZoom() <= 19 && map.getZoom() >= 12) {
-                map.addLayer(layer_Fglarindeladeutifrnrdlistan_1);
-            } else if (map.getZoom() > 19 || map.getZoom() < 12) {
-                map.removeLayer(layer_Fglarindeladeutifrnrdlistan_1);
-            }
+        bounds_group.addLayer(layer_Nationelltutdd_6);
+        map.addLayer(layer_Nationelltutdd_6);
         var overlaysTree = [
-            {label: 'Fåglar indelade utifrån rödlistan<br /><table><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Nationelltutdöd0.png" /></td><td>Nationellt utdöd</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Starkthotad1.png" /></td><td>Starkt hotad</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Sårbar2.png" /></td><td>Sårbar</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Närahotad3.png" /></td><td>Nära hotad</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Ejtillämpligfrämmandeart4.png" /></td><td>Ej tillämplig (främmande art)</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Ejbedömd5.png" /></td><td>Ej bedömd</td></tr></table>', layer: layer_Fglarindeladeutifrnrdlistan_1},
+            {label: '<img src="legend/Nationelltutdd_6.png" /> Nationellt utdöd', layer: layer_Nationelltutdd_6},
+            {label: '<img src="legend/Starkthotad_5.png" /> Starkt hotad', layer: layer_Starkthotad_5},
+            {label: '<img src="legend/Srbar_4.png" /> Sårbar', layer: layer_Srbar_4},
+            {label: '<img src="legend/Nrahotad_3.png" /> Nära hotad', layer: layer_Nrahotad_3},
+            {label: '<img src="legend/Ejtillmplig_2.png" /> Ej tillämplig', layer: layer_Ejtillmplig_2},
+            {label: '<img src="legend/Ejbedmd_1.png" /> Ej bedömd', layer: layer_Ejbedmd_1},
             {label: "Carto Light All", layer: layer_CartoLightAll_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
@@ -301,16 +478,6 @@
         });
         lay.addTo(map);
         setBounds();
-        map.addControl(new L.Control.Search({
-            layer: layer_Fglarindeladeutifrnrdlistan_1,
-            initial: false,
-            hideMarkerOnCollapse: true,
-            propertyName: 'Svenskt Namn'}));
-        if (typeof url === 'undefined') {
-            document.getElementsByClassName('search-button')[0].className += ' fa fa-binoculars';
-        } else {
-            document.getElementsByClassName('search-button')[1].className += ' fa fa-binoculars';
-        }
         </script>        
     </body>
 </html>
