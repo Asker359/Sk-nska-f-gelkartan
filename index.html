@@ -37,14 +37,13 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet.wms.js"></script>
         <script src="js/leaflet.photon.js"></script>
         <script src="js/leaflet-search.js"></script>
         <script src="data/Fglarindeladeutifrnrdlistan_1.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[55.21545677519289,11.635144468949195],[56.37962398006493,15.206002530258155]]);
+        }).fitBounds([[55.53927729534362,12.91141367917943],[55.715546956905776,13.357413398439407]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -126,21 +125,19 @@
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_TopografiskaWebbkartanNedtonad_0');
-        map.getPane('pane_TopografiskaWebbkartanNedtonad_0').style.zIndex = 400;
-        var layer_TopografiskaWebbkartanNedtonad_0 = L.WMS.layer("https://internkarta.orebro.se/lmproxy/topowebb/wms/v1", "topowebbkartan_nedtonad", {
-            pane: 'pane_TopografiskaWebbkartanNedtonad_0',
-            format: 'image/png',
-            uppercase: true,
-            transparent: true,
-            continuousWorld : true,
-            tiled: true,
-            info_format: 'text/html',
-            opacity: 1,
-            identify: false,
+        map.createPane('pane_CartoLightAll_0');
+        map.getPane('pane_CartoLightAll_0').style.zIndex = 400;
+        var layer_CartoLightAll_0 = L.tileLayer('https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            pane: 'pane_CartoLightAll_0',
+            opacity: 1.0,
             attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
         });
-        map.addLayer(layer_TopografiskaWebbkartanNedtonad_0);
+        layer_CartoLightAll_0;
+        map.addLayer(layer_CartoLightAll_0);
         function pop_Fglarindeladeutifrnrdlistan_1(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -292,7 +289,7 @@
             }
         var overlaysTree = [
             {label: 'Fåglar indelade utifrån rödlistan<br /><table><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Nationelltutdöd0.png" /></td><td>Nationellt utdöd</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Starkthotad1.png" /></td><td>Starkt hotad</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Sårbar2.png" /></td><td>Sårbar</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Närahotad3.png" /></td><td>Nära hotad</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Ejtillämpligfrämmandeart4.png" /></td><td>Ej tillämplig (främmande art)</td></tr><tr><td style="text-align: center;"><img src="legend/Fglarindeladeutifrnrdlistan_1_Ejbedömd5.png" /></td><td>Ej bedömd</td></tr></table>', layer: layer_Fglarindeladeutifrnrdlistan_1},
-            {label: "Topografiska Webbkartan Nedtonad", layer: layer_TopografiskaWebbkartanNedtonad_0, radioGroup: 'bm' },]
+            {label: "Carto Light All", layer: layer_CartoLightAll_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
             //selectorBack: false,
