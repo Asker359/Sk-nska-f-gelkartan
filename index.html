@@ -25,7 +25,7 @@
             margin: 0;
         }
     </style>
-    <title>Fåglar från artdatabanken</title>
+    <title>Fåglelobservationer i Skåne</title>
     <style id="copilot-fix">
         /* Ta bort vit bakgrund och standardkant */
         #menu {
@@ -153,14 +153,14 @@
                 popup._contentNode.classList.remove('media');
             }
         }
-        var title = new L.Control({ 'position': 'topright' });
+        var title = new L.Control({ 'position': 'bottomleft' });
         title.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'info');
             this.update();
             return this._div;
         };
         title.update = function () {
-            this._div.innerHTML = '<h2>Fåglar från artdatabanken</h2>';
+            this._div.innerHTML = '<h2>Fåglelobservationer i Skåne</h2>';
         };
         title.addTo(map);
         var zoomControl = L.control.zoom({
@@ -655,6 +655,8 @@
         div_Svensktnamn.id = "div_Svensktnamn";
         div_Svensktnamn.className = "filterselect";
         document.getElementById("menu").appendChild(div_Svensktnamn);
+        // ändra nedan så att filtret döljs
+        div_Svensktnamn.style.display = 'none';
         sel_Svensktnamn = document.createElement('select');
         sel_Svensktnamn.multiple = true;
         sel_Svensktnamn.size = 10;
@@ -871,18 +873,17 @@
             filterFunc();
         };
         div_Svensktnamn.appendChild(reset_Svensktnamn);
-
         // === TOGGLE BUTTON FÖR SVENSKTNAMN-FILTRET ===
         // Denna kod lägger till en knapp som tänden och släcker svenskt namn-filtret
 
         // Skapa toggle-knappen
         var toggleFilterBtn = document.createElement('button');
         toggleFilterBtn.id = 'toggleFilterBtn';
-        toggleFilterBtn.innerHTML = '<i class="fas fa-sliders-h"></i> Dölj filter';
-        toggleFilterBtn.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 1px 2px; background-color: #f8f8f8; border: 2px solid #999; border-radius: 4px; cursor: pointer; font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);';
+        toggleFilterBtn.innerHTML = '<i class="fas fa-sliders-h"></i> Visa filter';
+        toggleFilterBtn.style.cssText = 'position: fixed; top: 10px; right: 300px; z-index: 1000; padding: 1px 2px; background-color: #f8f8f8; border: 2px solid #999; border-radius: 4px; cursor: pointer; font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);';
         document.body.appendChild(toggleFilterBtn);
 
-        var filterVisible = true;
+        var filterVisible = false;
 
         // Toggle-funktionen
         toggleFilterBtn.onclick = function () {
