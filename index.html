@@ -46,7 +46,7 @@
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[55.620503900783035,12.991806076566672],[55.79649694917675,13.438406963809014]]);
+        }).fitBounds([[54.94503737102152,10.62270655130454],[56.73957072109962,16.368702122247576]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -127,6 +127,8 @@
         L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
+            map.setMaxBounds(map.getBounds());
+            map.setMinZoom(map.getZoom());
         }
         map.createPane('pane_CartoLightAll_0');
         map.getPane('pane_CartoLightAll_0').style.zIndex = 400;
@@ -144,11 +146,15 @@
         function pop_Ejbedmd_1(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -170,7 +176,7 @@
                 weight: 2.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(81,168,0,1.0)',
+                fillColor: 'rgba(51,160,44,1.0)',
                 interactive: true,
             }
         }
@@ -196,11 +202,15 @@
         function pop_Ejtillmplig_2(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -222,7 +232,7 @@
                 weight: 2.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(0,38,254,1.0)',
+                fillColor: 'rgba(31,120,180,1.0)',
                 interactive: true,
             }
         }
@@ -248,11 +258,15 @@
         function pop_Nrahotad_3(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(String(feature.properties['id']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -274,7 +288,7 @@
                 weight: 2.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(214,161,0,1.0)',
+                fillColor: 'rgba(218,134,0,1.0)',
                 interactive: true,
             }
         }
@@ -300,11 +314,15 @@
         function pop_Srbar_4(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -326,7 +344,7 @@
                 weight: 2.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(255,123,123,1.0)',
+                fillColor: 'rgba(255,125,125,1.0)',
                 interactive: true,
             }
         }
@@ -352,11 +370,15 @@
         function pop_Starkthotad_5(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -404,11 +426,15 @@
         function pop_Nationelltutdd_6(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>Svenskt Namn</strong><br />' + (feature.properties['Svenskt Namn'] !== null ? autolinker.link(String(feature.properties['Svenskt Namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Svenskt namn</strong><br />' + (feature.properties['Svenskt namn'] !== null ? autolinker.link(String(feature.properties['Svenskt namn']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Fyndinformation</th>\
-                        <td>' + (feature.properties['Fyndinformation'] !== null ? autolinker.link(String(feature.properties['Fyndinformation']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">Observation URL</th>\
+                        <td>' + (feature.properties['Observation URL'] !== null ? autolinker.link(String(feature.properties['Observation URL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Rapporterad (datum)</th>\
+                        <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
