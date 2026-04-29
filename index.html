@@ -871,6 +871,37 @@
             filterFunc();
         };
         div_Svensktnamn.appendChild(reset_Svensktnamn);
+
+        // === TOGGLE BUTTON FÖR SVENSKTNAMN-FILTRET ===
+        // Denna kod lägger till en knapp som tänden och släcker svenskt namn-filtret
+
+        // Skapa toggle-knappen
+        var toggleFilterBtn = document.createElement('button');
+        toggleFilterBtn.id = 'toggleFilterBtn';
+        toggleFilterBtn.innerHTML = '<i class="fas fa-sliders-h"></i> Dölj filter';
+        toggleFilterBtn.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 1000; padding: 1px 2px; background-color: #f8f8f8; border: 2px solid #999; border-radius: 4px; cursor: pointer; font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);';
+        document.body.appendChild(toggleFilterBtn);
+
+        var filterVisible = true;
+
+        // Toggle-funktionen
+        toggleFilterBtn.onclick = function () {
+            var divSvensktnamn = document.getElementById('div_Svensktnamn');
+
+            if (filterVisible) {
+                // Dölj filtret
+                divSvensktnamn.style.display = 'none';
+                toggleFilterBtn.innerHTML = '<i class="fas fa-sliders-h"></i> Visa Filter';
+                toggleFilterBtn.style.backgroundColor = '#e0e0e0';
+                filterVisible = false;
+            } else {
+                // Visa filtret
+                divSvensktnamn.style.display = 'block';
+                toggleFilterBtn.innerHTML = '<i class="fas fa-sliders-h"></i> Dölj Filter';
+                toggleFilterBtn.style.backgroundColor = '#f8f8f8';
+                filterVisible = true;
+            }
+        };
     </script>
 </body>
 
