@@ -25,7 +25,7 @@
             margin: 0;
         }
     </style>
-    <title>Fåglelobservationer i Skåne senaste månaden</title>
+    <title>Fåglelobservationer i Skåne</title>
     <style id="copilot-fix">
         /* Ta bort vit bakgrund och standardkant */
         #menu {
@@ -88,7 +88,7 @@
     <script>
         var map = L.map('map', {
             zoomControl: false, maxZoom: 28, minZoom: 1
-        }).fitBounds([[54.97534742669767, 10.670077473013707], [56.76827382697826, 16.42066925258145]]);
+        }).fitBounds([[55.04566165525976, 11.340219095064022], [56.583100136515256, 16.00640487447734]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
@@ -160,7 +160,7 @@
             return this._div;
         };
         title.update = function () {
-            this._div.innerHTML = '<h2>Fåglelobservationer i Skåne senaste månaden</h2>';
+            this._div.innerHTML = '<h2>Fåglelobservationer i Skåne</h2>';
         };
         title.addTo(map);
         var zoomControl = L.control.zoom({
@@ -197,6 +197,9 @@
                     <tr>\
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -254,6 +257,9 @@
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
+                    </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
             layer.on('popupopen', function (e) {
@@ -309,6 +315,9 @@
                     <tr>\
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -366,6 +375,9 @@
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
+                    </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
             layer.on('popupopen', function (e) {
@@ -422,6 +434,9 @@
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Bild</strong><br />' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
+                    </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
             layer.on('popupopen', function (e) {
@@ -477,6 +492,9 @@
                     <tr>\
                         <th scope="row">Rapporterad (datum)</th>\
                         <td>' + (feature.properties['Rapporterad (datum)'] !== null ? autolinker.link(String(feature.properties['Rapporterad (datum)']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Bild</strong><br />' + (feature.properties['Bild'] !== null ? '<img src="images/' + String(feature.properties['Bild']).replace(/[\\/:]/g, '_').trim().replace(/'/g, '\'').replace(/"/g, '&quot;') + '">' : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -662,8 +680,10 @@
         sel_Svensktnamn.id = "sel_Svensktnamn";
         var Svensktnamn_options_str = "<option value='' unselected></option>";
         sel_Svensktnamn.onchange = function () { filterFunc() };
+        Svensktnamn_options_str += '<option value="aftonfalk">aftonfalk</option>';
         Svensktnamn_options_str += '<option value="alfågel">alfågel</option>';
         Svensktnamn_options_str += '<option value="amerikansk kricka">amerikansk kricka</option>';
+        Svensktnamn_options_str += '<option value="amerikansk sjöorre">amerikansk sjöorre</option>';
         Svensktnamn_options_str += '<option value="backsvala">backsvala</option>';
         Svensktnamn_options_str += '<option value="bergand">bergand</option>';
         Svensktnamn_options_str += '<option value="bivråk">bivråk</option>';
@@ -676,6 +696,7 @@
         Svensktnamn_options_str += '<option value="brunand">brunand</option>';
         Svensktnamn_options_str += '<option value="brunsiska">brunsiska</option>';
         Svensktnamn_options_str += '<option value="brushane">brushane</option>';
+        Svensktnamn_options_str += '<option value="citronärla">citronärla</option>';
         Svensktnamn_options_str += '<option value="drillsnäppa">drillsnäppa</option>';
         Svensktnamn_options_str += '<option value="duvhök">duvhök</option>';
         Svensktnamn_options_str += '<option value="ejder">ejder</option>';
@@ -683,8 +704,10 @@
         Svensktnamn_options_str += '<option value="enkelbeckasin">enkelbeckasin</option>';
         Svensktnamn_options_str += '<option value="entita">entita</option>';
         Svensktnamn_options_str += '<option value="eurasisk kricka">eurasisk kricka</option>';
+        Svensktnamn_options_str += '<option value="europeisk myrspov">europeisk myrspov</option>';
         Svensktnamn_options_str += '<option value="europeisk rödspov">europeisk rödspov</option>';
         Svensktnamn_options_str += '<option value="europeisk skata">europeisk skata</option>';
+        Svensktnamn_options_str += '<option value="europeisk sädesärla">europeisk sädesärla</option>';
         Svensktnamn_options_str += '<option value="europeisk ärtsångare">europeisk ärtsångare</option>';
         Svensktnamn_options_str += '<option value="fisk-/silvertärna">fisk-/silvertärna</option>';
         Svensktnamn_options_str += '<option value="fjällgås">fjällgås</option>';
@@ -723,6 +746,7 @@
         Svensktnamn_options_str += '<option value="kustpipare">kustpipare</option>';
         Svensktnamn_options_str += '<option value="kustsnäppa">kustsnäppa</option>';
         Svensktnamn_options_str += '<option value="ladusvala">ladusvala</option>';
+        Svensktnamn_options_str += '<option value="lunnefågel">lunnefågel</option>';
         Svensktnamn_options_str += '<option value="lövsångare x gransångare">lövsångare x gransångare</option>';
         Svensktnamn_options_str += '<option value="mandarinand">mandarinand</option>';
         Svensktnamn_options_str += '<option value="mellanskarv">mellanskarv</option>';
@@ -732,6 +756,8 @@
         Svensktnamn_options_str += '<option value="mosnäppa">mosnäppa</option>';
         Svensktnamn_options_str += '<option value="myrspov">myrspov</option>';
         Svensktnamn_options_str += '<option value="mörkbukig prutgås">mörkbukig prutgås</option>';
+        Svensktnamn_options_str += '<option value="natthäger">natthäger</option>';
+        Svensktnamn_options_str += '<option value="nilgås">nilgås</option>';
         Svensktnamn_options_str += '<option value="nordlig gulärla">nordlig gulärla</option>';
         Svensktnamn_options_str += '<option value="nordlig stjärtmes">nordlig stjärtmes</option>';
         Svensktnamn_options_str += '<option value="nötkråka">nötkråka</option>';
@@ -741,7 +767,9 @@
         Svensktnamn_options_str += '<option value="pärluggla">pärluggla</option>';
         Svensktnamn_options_str += '<option value="rackelhane">rackelhane</option>';
         Svensktnamn_options_str += '<option value="ringand">ringand</option>';
+        Svensktnamn_options_str += '<option value="rosenfink">rosenfink</option>';
         Svensktnamn_options_str += '<option value="roskarl">roskarl</option>';
+        Svensktnamn_options_str += '<option value="rostgumpsvala">rostgumpsvala</option>';
         Svensktnamn_options_str += '<option value="rödhalsad gås">rödhalsad gås</option>';
         Svensktnamn_options_str += '<option value="rödhöna">rödhöna</option>';
         Svensktnamn_options_str += '<option value="rödspov">rödspov</option>';
@@ -749,12 +777,14 @@
         Svensktnamn_options_str += '<option value="rördrom">rördrom</option>';
         Svensktnamn_options_str += '<option value="rörsångare">rörsångare</option>';
         Svensktnamn_options_str += '<option value="sandlöpare">sandlöpare</option>';
+        Svensktnamn_options_str += '<option value="sandtärna">sandtärna</option>';
         Svensktnamn_options_str += '<option value="sibirisk knölsvärta">sibirisk knölsvärta</option>';
         Svensktnamn_options_str += '<option value="sillgrissla/tordmule">sillgrissla/tordmule</option>';
         Svensktnamn_options_str += '<option value="silltrut">silltrut</option>';
         Svensktnamn_options_str += '<option value="skedstork">skedstork</option>';
         Svensktnamn_options_str += '<option value="skogsgås">skogsgås</option>';
         Svensktnamn_options_str += '<option value="skräntärna">skräntärna</option>';
+        Svensktnamn_options_str += '<option value="småfläckig sumphöna">småfläckig sumphöna</option>';
         Svensktnamn_options_str += '<option value="smålom/storlom">smålom/storlom</option>';
         Svensktnamn_options_str += '<option value="småtärna">småtärna</option>';
         Svensktnamn_options_str += '<option value="snatterand x gräsand">snatterand x gräsand</option>';
@@ -763,6 +793,7 @@
         Svensktnamn_options_str += '<option value="sommargylling">sommargylling</option>';
         Svensktnamn_options_str += '<option value="sparvuggla">sparvuggla</option>';
         Svensktnamn_options_str += '<option value="spetsbergsgås">spetsbergsgås</option>';
+        Svensktnamn_options_str += '<option value="spovsnäppa">spovsnäppa</option>';
         Svensktnamn_options_str += '<option value="stare">stare</option>';
         Svensktnamn_options_str += '<option value="stjärtand">stjärtand</option>';
         Svensktnamn_options_str += '<option value="storlabb">storlabb</option>';
@@ -771,7 +802,9 @@
         Svensktnamn_options_str += '<option value="strandskata">strandskata</option>';
         Svensktnamn_options_str += '<option value="stäpphök">stäpphök</option>';
         Svensktnamn_options_str += '<option value="stäpphök x ängshök">stäpphök x ängshök</option>';
+        Svensktnamn_options_str += '<option value="stäpphök/blå kärrhök">stäpphök/blå kärrhök</option>';
         Svensktnamn_options_str += '<option value="stäpphök/ängshök">stäpphök/ängshök</option>';
+        Svensktnamn_options_str += '<option value="större piplärka">större piplärka</option>';
         Svensktnamn_options_str += '<option value="svangås">svangås</option>';
         Svensktnamn_options_str += '<option value="svart rödstjärt">svart rödstjärt</option>';
         Svensktnamn_options_str += '<option value="svart stork">svart stork</option>';
@@ -784,6 +817,7 @@
         Svensktnamn_options_str += '<option value="svartnäbbad islom">svartnäbbad islom</option>';
         Svensktnamn_options_str += '<option value="svartsnäppa">svartsnäppa</option>';
         Svensktnamn_options_str += '<option value="svarttärna">svarttärna</option>';
+        Svensktnamn_options_str += '<option value="svartvit flugsnappare x halsbandsflugsnappare">svartvit flugsnappare x halsbandsflugsnappare</option>';
         Svensktnamn_options_str += '<option value="sydlig gransångare">sydlig gransångare</option>';
         Svensktnamn_options_str += '<option value="sydlig gulärla">sydlig gulärla</option>';
         Svensktnamn_options_str += '<option value="sädesärla">sädesärla</option>';
@@ -835,7 +869,7 @@
             filterFunc();
         };
         div_Svensktnamn.appendChild(reset_Svensktnamn);
-        // === TOGGLE BUTTON FÖR SVENSKTNAMN-FILTRET ===
+                // === TOGGLE BUTTON FÖR SVENSKTNAMN-FILTRET ===
         // Denna kod lägger till en knapp som tänden och släcker svenskt namn-filtret
 
         // Skapa toggle-knappen
